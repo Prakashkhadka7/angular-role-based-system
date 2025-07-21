@@ -1,0 +1,166 @@
+<div class="dashboard-container">
+  <!-- Welcome Header -->
+  <div class="welcome-section">
+    <div class="welcome-content">
+      <h1 class="welcome-title">
+        {{ getGreeting() }}, {{ currentUser?.fullName || 'User' }}! 👋
+      </h1>
+      <p class="welcome-subtitle">
+        {{ formatDate(currentTime) }} • {{ formatTime(currentTime) }}
+      </p>
+    </div>
+    <div class="user-avatar">
+      <mat-icon class="avatar-icon">account_circle</mat-icon>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <mat-card class="stat-card welcome-card">
+      <mat-card-content>
+        <div class="stat-header">
+          <mat-icon class="stat-icon primary-color">waving_hand</mat-icon>
+          <div class="stat-info">
+            <h3>Welcome Back!</h3>
+            <p>Ready to manage your system</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card role-card">
+      <mat-card-content>
+        <div class="stat-header">
+          <mat-icon class="stat-icon accent-color">security</mat-icon>
+          <div class="stat-info">
+            <h3>{{ currentUserRole?.name || 'Loading...' }}</h3>
+            <p>{{ getPermissionCount() }} permissions assigned</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card status-card">
+      <mat-card-content>
+        <div class="stat-header">
+          <mat-icon class="stat-icon success-color">check_circle</mat-icon>
+          <div class="stat-info">
+            <h3>System Online</h3>
+            <p>All services operational</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card time-card">
+      <mat-card-content>
+        <div class="stat-header">
+          <mat-icon class="stat-icon info-color">schedule</mat-icon>
+          <div class="stat-info">
+            <h3>Active Session</h3>
+            <p>Logged in as {{ currentUser?.username }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions-section">
+    <h2 class="section-title">
+      <mat-icon>bolt</mat-icon>
+      Quick Actions
+    </h2>
+    
+    <div class="actions-grid">
+      <mat-card 
+        *ngFor="let action of quickActions" 
+        class="action-card"
+        [routerLink]="action.route"
+        role="button"
+        tabindex="0">
+        <mat-card-content>
+          <div class="action-header">
+            <mat-icon 
+              class="action-icon"
+              [ngClass]="action.color + '-color'">
+              {{ action.icon }}
+            </mat-icon>
+          </div>
+          <div class="action-content">
+            <h3>{{ action.title }}</h3>
+            <p>{{ action.description }}</p>
+          </div>
+          <mat-icon class="action-arrow">arrow_forward</mat-icon>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- User Permissions Overview -->
+  <div class="permissions-section" *ngIf="currentUserRole">
+    <h2 class="section-title">
+      <mat-icon>verified_user</mat-icon>
+      Your Permissions
+    </h2>
+    
+    <mat-card class="permissions-card">
+      <mat-card-content>
+        <div class="permissions-grid">
+          <div 
+            *ngFor="let permission of currentUserRole.permissions" 
+            class="permission-chip">
+            <mat-icon class="permission-icon">check</mat-icon>
+            <!-- <span>{{ permission.replace('_', ' ') | titlecase }}</span> -->
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- System Information -->
+  <div class="system-info-section">
+    <h2 class="section-title">
+      <mat-icon>info</mat-icon>
+      System Information
+    </h2>
+    
+    <mat-card class="info-card">
+      <mat-card-content>
+        <div class="info-grid">
+          <div class="info-item">
+            <mat-icon class="info-icon">person</mat-icon>
+            <div>
+              <strong>User ID:</strong>
+              <span>{{ currentUser?.id }}</span>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <mat-icon class="info-icon">email</mat-icon>
+            <div>
+              <strong>Email:</strong>
+              <span>{{ currentUser?.email }}</span>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <mat-icon class="info-icon">event</mat-icon>
+            <div>
+              <strong>Member Since:</strong>
+              <span>{{ currentUser?.createdAt | date:'mediumDate' }}</span>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <mat-icon class="info-icon">verified</mat-icon>
+            <div>
+              <strong>Status:</strong>
+              <span class="status-active">Active</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

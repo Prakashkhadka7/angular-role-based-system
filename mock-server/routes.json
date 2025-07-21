@@ -1,0 +1,15 @@
+{
+  "/api/*": "/$1",
+  "/auth/login": "/auth/login",
+  "/auth/refresh": "/auth/refresh",
+  "/auth/logout": "/auth/logout",
+  "/api/users": "/users",
+  "/api/users/:id": "/users/:id",
+  "/api/roles": "/roles",
+  "/api/roles/:id": "/roles/:id",
+  "/api/permissions": "/permissions",
+  "/api/permissions/:id": "/permissions/:id",
+  "/api/users/:id/roles": "/users/:id",
+  "/api/roles/:id/permissions": "/roles/:id",
+  "/api/users/check-username/:username": "/users?username=:username"
+}

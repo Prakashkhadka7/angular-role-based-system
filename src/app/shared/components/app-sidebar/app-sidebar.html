@@ -1,0 +1,40 @@
+<div class="sidebar-container">
+  <div class="sidebar-header">
+    <div class="user-info" *ngIf="currentUser">
+      <div class="avatar">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <div class="user-details">
+        <div class="user-name">{{ currentUser.fullName }}</div>
+        <div class="user-role">{{ currentUser.role?.name }}</div>
+      </div>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <nav class="sidebar-nav">
+    <mat-nav-list>
+      <mat-list-item 
+        *ngFor="let item of menuItems"
+        [class.active]="isActiveRoute(item.route)"
+        (click)="navigate(item.route)"
+        [hidden]="!hasPermission(item.requiredPermissions)">
+        
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle>{{ item.label }}</span>
+        
+        <div matRipple class="ripple-box">
+        Click
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
+  </nav>
+
+  <div class="sidebar-footer">
+    <mat-divider></mat-divider>
+    <div class="app-version">
+      <small>Version 1.0.0</small>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+.header-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 64px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.app-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-left: 16px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.welcome-text {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  
+  .username {
+    @media (max-width: 480px) {
+      display: none;
+    }
+  }
+}
+
+.mat-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .app-title {
+    font-size: 1rem;
+    margin-left: 8px;
+  }
+}

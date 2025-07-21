@@ -1,0 +1,32 @@
+.confirm-dialog {
+    max-width: 400px;
+}
+
+.dialog-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.type-warning mat-icon {
+    color: #ff9800;
+}
+
+.type-danger mat-icon {
+    color: #f44336;
+}
+
+.type-info mat-icon {
+    color: #2196f3;
+}
+
+.dialog-content {
+    margin-bottom: 24px;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}

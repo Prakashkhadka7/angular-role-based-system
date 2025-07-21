@@ -1,0 +1,136 @@
+.sidebar-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fafafa;
+  border-right: 1px solid #e0e0e0;
+}
+
+.sidebar-header {
+  padding: 20px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  .mat-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    color: white;
+  }
+}
+
+.user-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding-top: 8px;
+}
+
+.mat-mdc-list-item {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 0 25px 25px 0;
+  margin: 2px 0;
+  margin-right: 8px;
+  
+  &:hover {
+    background-color: rgba(103, 126, 234, 0.1);
+    
+    .mat-icon {
+      color: #667eea;
+    }
+  }
+  
+  &.active {
+    background-color: #667eea;
+    color: white;
+    
+    .mat-icon {
+      color: white;
+    }
+  }
+}
+
+.mat-mdc-list-item-title {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.mat-icon {
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px;
+}
+
+.app-version {
+  text-align: center;
+  color: #999;
+  font-size: 0.75rem;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .sidebar-container {
+    width: 280px;
+  }
+  
+  .user-name {
+    font-size: 0.9rem;
+  }
+  
+  .user-role {
+    font-size: 0.75rem;
+  }
+}
+
+// Dark theme support
+.dark-theme {
+  .sidebar-container {
+    background: #303030;
+    border-right-color: #424242;
+  }
+  
+  .mat-mdc-list-item {
+    color: #fff;
+    
+    &:hover {
+      background-color: rgba(103, 126, 234, 0.2);
+    }
+  }
+  
+  .mat-icon {
+    color: #ccc;
+  }
+}
