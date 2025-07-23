@@ -1,0 +1,139 @@
+<div class="role-list-container">
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <mat-icon class="title-icon">admin_panel_settings</mat-icon>
+        Role Management
+      </h1>
+      <p class="page-description">Manage system roles and permissions</p>
+    </div>
+    
+    <div class="header-actions">
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="createRole()"
+        class="create-button">
+        <mat-icon>add</mat-icon>
+        Create New Role
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="roles-card">
+    <mat-card-header>
+      <mat-card-title>All Roles</mat-card-title>
+      <mat-card-subtitle>{{ roles.length }} role(s) found</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading roles...</p>
+      </div>
+
+      <div *ngIf="!isLoading && roles.length === 0" class="empty-state">
+        <mat-icon class="empty-icon">admin_panel_settings</mat-icon>
+        <h3>No Roles Found</h3>
+        <p>Create your first role to get started</p>
+        <button mat-raised-button color="primary" (click)="createRole()">
+          <mat-icon>add</mat-icon>
+          Create Role
+        </button>
+      </div>
+
+      <div *ngIf="!isLoading && roles.length > 0" class="table-container">
+        <table mat-table [dataSource]="roles" class="roles-table">
+          <!-- Role Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef class="name-header">Role Name</th>
+            <td mat-cell *matCellDef="let role" class="name-cell">
+              <div class="role-info">
+                <span class="role-name">{{ role.name }}</span>
+                <mat-chip *ngIf="role.isDefault" class="default-chip">Default</mat-chip>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Permissions Column -->
+          <ng-container matColumnDef="permissions">
+            <th mat-header-cell *matHeaderCellDef>Permissions</th>
+            <td mat-cell *matCellDef="let role" class="permissions-cell">
+              <div class="permissions-container">
+                <mat-chip-listbox class="permissions-chips">
+                  <mat-chip-option 
+                    *ngFor="let permission of role.permissions.slice(0, 3)"
+                    class="permission-chip"
+                    disabled>
+                    {{ permission.name | titlecase }}
+                  </mat-chip-option>
+                  <mat-chip-option 
+                    *ngIf="role.permissions.length > 3"
+                    class="more-chip"
+                    disabled>
+                    +{{ role.permissions.length - 3 }} more
+                  </mat-chip-option>
+                </mat-chip-listbox>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Default Role Column -->
+          <ng-container matColumnDef="isDefault">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let role">
+              <mat-icon 
+                class="status-icon"
+                [class.default-role]="role.isDefault"
+                [class.custom-role]="!role.isDefault">
+                {{ role.isDefault ? 'verified' : 'settings' }}
+              </mat-icon>
+              <span class="status-text">{{ role.isDefault ? 'Default' : 'Custom' }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Created Date Column -->
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef>Created</th>
+            <td mat-cell *matCellDef="let role">
+              <div class="date-info">
+                <span class="date">{{ role.createdAt | date:'mediumDate' }}</span>
+                <span class="time">{{ role.createdAt | date:'shortTime' }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="actions-header">Actions</th>
+            <td mat-cell *matCellDef="let role" class="actions-cell">
+              <div class="action-buttons">
+                <button 
+                  mat-icon-button 
+                  color="primary"
+                  (click)="editRole(role)"
+                  matTooltip="Edit Role"
+                  class="edit-button">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                
+                <button 
+                  mat-icon-button 
+                  color="warn"
+                  (click)="deleteRole(role)"
+                  [disabled]="role.isDefault"
+                  matTooltip="Delete Role"
+                  class="delete-button">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="role-row"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

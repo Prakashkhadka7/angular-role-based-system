@@ -10,23 +10,24 @@ import { NavigationItem } from '../models/auth.model';
 export class PermissionService {
   constructor(private authService: AuthService) {}
 
-  hasPermission(argPermission: Permission): Observable<boolean> {
+  hasPermission(argPermission: any): Observable<boolean> {
     return this.authService.permissions$.pipe(
       map((permissions) => {
         if (!permissions || permissions.length === 0) {
           return false;
         }
 
-        return permissions.some(
-          (permission: Permission) =>
-             permission.id === argPermission.id
+        return permissions.some((permission: Permission) =>
+          typeof argPermission === 'string'
+            ? permission.name === argPermission
+            : permission.name === argPermission.name
         );
       })
     );
   }
 
   hasAnyPermission(
-    requiredPermissions: Permission[]
+    requiredPermissions: { resource: ResourceType; action: ActionType }[]
   ): Observable<boolean> {
     return combineLatest(
       requiredPermissions.map((perm) => this.hasPermission(perm))

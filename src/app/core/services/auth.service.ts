@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, map, of } from 'rxjs';
+import { Observable, of, map, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { LoginCredentials, AuthResponse } from '../models/auth.model';
 import { User } from '../models/user.model';
@@ -8,107 +8,76 @@ import { Permission } from '../models/role.model';
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private readonly API_URL = environment.API_URL;
   private readonly TOKEN_KEY = environment.TOKEN_KEY;
   private readonly USER_KEY = environment.USER_KEY;
 
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  private permissionsSubject = new BehaviorSubject<Permission[]>([]);
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-
-  public currentUser$ = this.currentUserSubject.asObservable();
-  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
-  public permissions$ = this.permissionsSubject.asObservable();
-  public loading$ = this.loadingSubject.asObservable();
-
   constructor(
     private http: HttpClient,
     private router: Router
-  ) {
-    this.initializeAuth();
-  }
+  ) {}
 
-  private initializeAuth(): void {
-    const token = localStorage.getItem(this.TOKEN_KEY);
+  /** Reads user from localStorage and emits as observable */
+  public get currentUser$(): Observable<User | null> {
     const userStr = localStorage.getItem(this.USER_KEY);
-    
-    if (token && userStr) {
-      try {
-        const user = JSON.parse(userStr);
-        this.currentUserSubject.next(user);
-        this.isAuthenticatedSubject.next(true);
-        this.loadUserPermissions(user.roleId);
-      } catch (error) {
-        this.logout();
-      }
-    }
+    return of(userStr ? JSON.parse(userStr) : null);
   }
 
+  /** Returns current user synchronously */
+  public getCurrentUser(): User | null {
+    const userStr = localStorage.getItem(this.USER_KEY);
+    return userStr ? JSON.parse(userStr) : null;
+  }
+
+  /** Checks if user is logged in */
+  public get isAuthenticated$(): Observable<boolean> {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    return of(!!token);
+  }
+
+  /** Returns the current token */
+  public getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  /** Emits the user’s permission list as observable */
+  public get permissions$(): Observable<Permission[]> {
+    const user = this.getCurrentUser();
+    return of(user?.permissions || []);
+  }
+
+  /** Login and persist token + user */
   login(credentials: LoginCredentials): Observable<AuthResponse> {
-    this.loadingSubject.next(true);
-    
     return this.http.post<AuthResponse>(`${this.API_URL}/auth/login`, credentials).pipe(
-      tap(response => {
+      tap((response: AuthResponse) => {
         localStorage.setItem(this.TOKEN_KEY, response.token);
         localStorage.setItem(this.USER_KEY, JSON.stringify(response.user));
-        
-        this.currentUserSubject.next(response.user);
-        this.isAuthenticatedSubject.next(true);
-        this.permissionsSubject.next(response.permissions || []);
-        this.loadingSubject.next(false);
       })
     );
   }
 
+  /** Logout: remove user and token from localStorage */
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
-    
-    this.currentUserSubject.next(null);
-    this.isAuthenticatedSubject.next(false);
-    this.permissionsSubject.next([]);
-    
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/login']);
   }
 
-  getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
-  }
-
-  getCurrentUser(): User | null {
-    return this.currentUserSubject.value;
-  }
-
-  private loadUserPermissions(roleId: string): void {
-    this.http.get<any>(`${this.API_URL}/roles/${roleId}`).subscribe({
-      next: (role) => {
-        this.permissionsSubject.next(role.permissions || []);
-      },
-      error: () => {
-        this.permissionsSubject.next([]);
-      }
-    });
-  }
-
-  
+  /** Get auth state as observable (optional alias) */
   isLoggedIn(): Observable<boolean> {
     return this.isAuthenticated$;
   }
-   
-  
+
+  /** Check if user has specific permission */
   hasPermission(permission: string): Observable<boolean> {
-    return of(true);
-    // return this.permissions$.pipe(
-    //   map((permissions) => {
-    //     if (!permissions || permissions.length === 0) {
-    //       return false;
-    //     }
-    //     return permissions.some((p: Permission) => p.name === permission);
-    //   })
-    // );
+    const user = this.getCurrentUser();
+    if (!user?.permissions || !Array.isArray(user.permissions)) {
+      return of(false);
+    }
+
+    return of(user.permissions.some(p => p.name === permission));
   }
 }

@@ -5,7 +5,7 @@
       [opened]="isSidenavOpen"
       [mode]="'side'"
       class="sidenav">
-      <app-header (toggleSidenav)="toggleSidenav()"></app-header>
+      <app-sidebar (toggleSidenav)="toggleSidenav()"></app-sidebar>
     </mat-sidenav>
     
     <mat-sidenav-content class="main-content">
@@ -14,8 +14,9 @@
         (toggleSidenav)="toggleSidenav()">
       </app-header>
       
+      
       <main class="content-area">
-        <!-- <router-outlet></router-outlet> -->
+        <router-outlet></router-outlet>
       </main>
     </mat-sidenav-content>
   </mat-sidenav-container>

@@ -26,12 +26,10 @@ export interface ConfirmDialogData {
    
 })
 export class ConfirmDialogComponent {
-  constructor(
+constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData
-  ) {
-    this.data.type = this.data.type || 'info';
-  }
+  ) {}
 
   onCancel(): void {
     this.dialogRef.close(false);
@@ -41,15 +39,29 @@ export class ConfirmDialogComponent {
     this.dialogRef.close(true);
   }
 
+  getDialogClass(): string {
+    return this.data.type || 'info';
+  }
+
   getIcon(): string {
     switch (this.data.type) {
-      case 'warning': return 'warning';
-      case 'danger': return 'error';
-      default: return 'info';
+      case 'warning':
+        return 'warning';
+      case 'danger':
+        return 'error';
+      default:
+        return 'info';
     }
   }
 
   getButtonColor(): string {
-    return this.data.type === 'danger' ? 'warn' : 'primary';
+    switch (this.data.type) {
+      case 'warning':
+        return 'accent';
+      case 'danger':
+        return 'warn';
+      default:
+        return 'primary';
+    }
   }
 }

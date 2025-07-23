@@ -1,6 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { NavigationItem } from '../../../core/models/auth.model';
-import { Role } from '../../../core/models/role.model';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -60,18 +58,17 @@ export class AppSidebar {
   }
 
   ngOnInit() {
-    this.currentUser$.subscribe(user => {
-      this.currentUser = user;
-    });
+      this.currentUser = this.authStateService.getCurrentUser();
+      console.log('Current user:', this.currentUser);
   }
 
-  hasPermission(requiredPermissions?: string[]): boolean {
-    if (!requiredPermissions || !this.currentUser) return true;
-    
-    const userPermissions = this.currentUser.role?.permissions || [];
-    return requiredPermissions.some(permission => 
-      userPermissions.includes(permission)
-    );
+  hasPermission(argPermission: any){
+    if(!argPermission){
+      return true;
+    }
+    console.log('argPermission:', argPermission);
+    console.log('hasPermission:', !!argPermission?.every((permission: string) => this.currentUser.permissions.some((p: any) => p.name === permission)));
+   return !!argPermission?.every((permission: string) => this.currentUser.permissions.some((p: any) => p.name === permission));
   }
 
   navigate(route: string) {

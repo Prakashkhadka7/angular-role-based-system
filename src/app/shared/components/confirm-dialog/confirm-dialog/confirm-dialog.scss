@@ -1,32 +1,68 @@
 .confirm-dialog {
-    max-width: 400px;
-}
+      min-width: 400px;
+    }
 
-.dialog-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-}
+    .dialog-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 0;
+      font-weight: 600;
+    }
 
-.type-warning mat-icon {
-    color: #ff9800;
-}
+    .dialog-title.warning {
+      color: #f57f17;
+    }
 
-.type-danger mat-icon {
-    color: #f44336;
-}
+    .dialog-title.danger {
+      color: #d32f2f;
+    }
 
-.type-info mat-icon {
-    color: #2196f3;
-}
+    .dialog-title.info {
+      color: #1976d2;
+    }
 
-.dialog-content {
-    margin-bottom: 24px;
-}
+    .dialog-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
 
-.dialog-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-}
+    .dialog-content {
+      padding: 20px 0;
+    }
+
+    .dialog-content p {
+      margin: 0;
+      line-height: 1.5;
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+    .dialog-actions {
+      gap: 8px;
+      padding: 8px 0 0 0;
+    }
+
+    .cancel-btn {
+      min-width: 80px;
+    }
+
+    .confirm-btn {
+      min-width: 80px;
+    }
+
+    @media (max-width: 600px) {
+      .confirm-dialog {
+        min-width: 280px;
+      }
+      
+      .dialog-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 8px;
+      }
+      
+      .cancel-btn, .confirm-btn {
+        width: 100%;
+      }
+    }

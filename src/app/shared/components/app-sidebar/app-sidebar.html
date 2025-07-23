@@ -15,19 +15,18 @@
 
   <nav class="sidebar-nav">
     <mat-nav-list>
-      <mat-list-item 
-        *ngFor="let item of menuItems"
-        [class.active]="isActiveRoute(item.route)"
-        (click)="navigate(item.route)"
-        [hidden]="!hasPermission(item.requiredPermissions)">
-        
+      <ng-container *ngFor="let item of menuItems">
+        <mat-list-item 
+         *ngIf="hasPermission(item.requiredPermissions)"
+          [class.active]="isActiveRoute(item.route)"
+          (click)="navigate(item.route)">
         <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
         <span matListItemTitle>{{ item.label }}</span>
         
         <div matRipple class="ripple-box">
-        Click
         </div>
       </mat-list-item>
+      </ng-container>
     </mat-nav-list>
   </nav>
 
