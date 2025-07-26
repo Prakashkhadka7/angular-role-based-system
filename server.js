@@ -29,8 +29,7 @@ app.post('/auth/login', (req, res) => {
   
   if (user) {
     const role = db.roles.find(r => r.id === user.roleId);
-    const permissions = db.permissions.filter(p => role.permissions.includes(p.id));
-    
+    const permissions = db.permissions.filter(permission => role.permissions.find(rolePermission => rolePermission.id === permission.id));
     res.json({
       success: true,
       token: 'mock-jwt-token-' + Date.now(),
@@ -46,7 +45,6 @@ app.post('/auth/login', (req, res) => {
     });
   } else {
     res.status(401).json({
-      success: false,
       message: 'Invalid username or password'
     });
   }

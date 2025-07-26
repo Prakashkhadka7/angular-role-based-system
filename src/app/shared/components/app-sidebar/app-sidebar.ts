@@ -59,15 +59,12 @@ export class AppSidebar {
 
   ngOnInit() {
       this.currentUser = this.authStateService.getCurrentUser();
-      console.log('Current user:', this.currentUser);
   }
 
   hasPermission(argPermission: any){
     if(!argPermission){
       return true;
     }
-    console.log('argPermission:', argPermission);
-    console.log('hasPermission:', !!argPermission?.every((permission: string) => this.currentUser.permissions.some((p: any) => p.name === permission)));
    return !!argPermission?.every((permission: string) => this.currentUser.permissions.some((p: any) => p.name === permission));
   }
 

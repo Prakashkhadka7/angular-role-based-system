@@ -97,4 +97,13 @@ roles: Role[] = [];
   formatPermissions(permissions: string[]): string {
     return permissions.map(p => p.replace('_', ' ')).join(', ');
   }
+
+  formatData(role: Role){
+    return role?.name.replace('_', ' ');
+  }
+
+  togglePermissions(role: any): void {
+    role.showAllPermissions = !role.showAllPermissions;
+  }
+
 }

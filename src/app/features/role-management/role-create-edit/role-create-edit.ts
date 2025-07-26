@@ -80,7 +80,9 @@ export class RoleCreateEdit {
   private async loadPermissions(): Promise<void> {
     try {
       this.roleService.loadRoles().subscribe((roles) => {
-        this.availablePermissions = roles.flatMap((r) => r.permissions);
+        this.availablePermissions = Array.from(
+          new Set(roles.flatMap((r) => r.permissions))
+        );
       });
     } catch (error) {
       this.snackBar.open('Failed to load permissions', 'Close', {

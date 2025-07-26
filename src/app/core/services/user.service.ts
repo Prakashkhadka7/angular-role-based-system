@@ -52,7 +52,7 @@ export class UserService {
   updateUser(id: string, userData: UpdateUserRequest): Observable<User> {
     this.loadingSubject.next(true);
     
-    return this.http.patch<User>(`${this.API_URL}/users/${id}`, {
+    return this.http.put<User>(`${this.API_URL}/users/${id}`, {
       ...userData,
       updatedAt: new Date().toISOString()
     }).pipe(

@@ -111,7 +111,7 @@
             *ngFor="let permission of currentUserRole.permissions" 
             class="permission-chip">
             <mat-icon class="permission-icon">check</mat-icon>
-            <!-- <span>{{ permission.replace('_', ' ') | titlecase }}</span> -->
+            <span>{{ permission?.name | titlecase }}</span>
           </div>
         </div>
       </mat-card-content>

@@ -1,22 +1,20 @@
 import { Routes } from '@angular/router';
-import { Login } from './features/auth/login/login';
-import { Home } from './features/dashboard/home/home';
 import { AuthGuard } from './core/guards/auth.guard';
-import { MainLayout } from './features/layout/main-layout/main-layout';
 import { PermissionGuard } from './core/guards/permission.guard';
-import { RoleList } from './features/role-management/role-list/role-list';
-import { UserList } from './features/user-management/user-list/user-list';
-import { UserDetails } from './features/user-management/user-details/user-details';
 
 export const routes: Routes = [
   {
     path: 'login',
-    component: Login,
+    loadComponent: () =>
+      import('./features/auth/login/login').then((m) => m.Login),
     data: { title: 'Login' },
   },
   {
     path: '',
-    component: MainLayout,
+    loadComponent: () =>
+      import('./features/layout/main-layout/main-layout').then(
+        (m) => m.MainLayout
+      ),
     canActivate: [AuthGuard],
     children: [
       {
@@ -26,7 +24,8 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard',
-        component: Home,
+        loadComponent: () =>
+          import('./features/dashboard/home/home').then((m) => m.Home),
         data: { title: 'Dashboard' },
       },
       {
@@ -36,7 +35,10 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            component: RoleList,
+            loadComponent: () =>
+              import('./features/role-management/role-list/role-list').then(
+                (m) => m.RoleList
+              ),
           },
         ],
       },
@@ -47,26 +49,32 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            component: UserList,
+            loadComponent: () =>
+              import('./features/user-management/user-list/user-list').then(
+                (m) => m.UserList
+              ),
           },
           {
             path: ':id',
-            component: UserDetails,
+            loadComponent: () =>
+              import(
+                './features/user-management/user-details/user-details'
+              ).then((m) => m.UserDetails),
             data: { title: 'User Details' },
           },
         ],
       },
       {
         path: 'profile',
-        component: Home,
+        loadComponent: () =>
+          import('./features/dashboard/home/home').then((m) => m.Home),
         data: { title: 'My Profile' },
       },
     ],
   },
-
-  // Wildcard route 
-    {
-      path: '**',
-      redirectTo: '/dashboard',
-    },
+  {
+    path: '**',
+    redirectTo: '/dashboard',
+  },
 ];
+

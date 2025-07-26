@@ -42,7 +42,7 @@
         </button>
       </div>
 
-      <div *ngIf="!isLoading && roles.length > 0" class="table-container">
+      <div *ngIf="!isLoading && roles.length > 0" class="role-list-table-container">
         <table mat-table [dataSource]="roles" class="roles-table">
           <!-- Role Name Column -->
           <ng-container matColumnDef="name">
@@ -56,22 +56,28 @@
           </ng-container>
 
           <!-- Permissions Column -->
+           <!-- {{role.permissions}} -->
           <ng-container matColumnDef="permissions">
             <th mat-header-cell *matHeaderCellDef>Permissions</th>
             <td mat-cell *matCellDef="let role" class="permissions-cell">
               <div class="permissions-container">
                 <mat-chip-listbox class="permissions-chips">
-                  <mat-chip-option 
-                    *ngFor="let permission of role.permissions.slice(0, 3)"
-                    class="permission-chip"
-                    disabled>
-                    {{ permission.name | titlecase }}
+                  <!-- Show first 3 permissions -->
+                  <mat-chip-option style="pointer-events: none;" *ngFor="let permission of role.permissions.slice(0, 3)"
+                    class="permission-chip">
+                    {{ formatData(permission) | titlecase }}
                   </mat-chip-option>
-                  <mat-chip-option 
-                    *ngIf="role.permissions.length > 3"
-                    class="more-chip"
-                    disabled>
-                    +{{ role.permissions.length - 3 }} more
+
+                  <!-- Show remaining permissions if expanded -->
+                  <mat-chip-option style="pointer-events: none;" *ngFor="let permission of role.permissions.slice(3)"
+                    class="permission-chip" [style.display]="role.showAllPermissions ? 'inline-flex' : 'none'">
+                    {{ formatData(permission) | titlecase }}
+                  </mat-chip-option>
+
+                  <!-- Toggle button -->
+                  <mat-chip-option *ngIf="role.permissions.length > 3" class="more-chip" (click)="togglePermissions(role)"
+                    [style.cursor]="'pointer'">
+                    {{ role.showAllPermissions ? 'Show less' : '+' + (role.permissions.length - 3) + ' more' }}
                   </mat-chip-option>
                 </mat-chip-listbox>
               </div>

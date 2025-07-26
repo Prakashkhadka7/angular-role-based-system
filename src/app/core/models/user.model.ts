@@ -10,7 +10,8 @@ export interface User {
   isActive: boolean;
   createdAt: string;
   updatedAt?: string;
-  permissions?: Permission[]
+  permissions?: Permission[],
+  password?: string
 }
 
 export interface CreateUserRequest {
@@ -19,6 +20,8 @@ export interface CreateUserRequest {
   fullName: string;
   email: string;
   roleId: string;
+  isActive: boolean
+
 }
 
 export interface UpdateUserRequest {
@@ -26,4 +29,6 @@ export interface UpdateUserRequest {
   email: string;
   roleId: string;
   isActive: boolean;
+  username?: string;
+  password?: string;
 }

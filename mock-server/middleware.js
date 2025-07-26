@@ -24,7 +24,11 @@ module.exports = (req, res, next) => {
     
     if (user) {
       const role = db.roles.find(r => r.id === user.roleId);
-      const permissions = db.permissions.filter(p => role.permissions.includes(p.id));
+      // const permissions = db.permissions.filter(p => role.permissions.includes(p.name));
+      db.permissions.filter(permission => role.permissions.find(rolePermission => rolePermission.id === permission.id))
+      console.log('permissions:', db.permissions);
+      console.log('role.permissions:', role.permissions);
+      
       
       res.json({
         success: true,

@@ -6,12 +6,12 @@
     <mat-icon>menu</mat-icon>
   </button>
   
-  <span class="app-title">Role Management System</span>
+  <span class="app-title">Role Based Management System</span>
   
   <span class="spacer"></span>
   
   <div class="user-menu" *ngIf="currentUser">
-    <span class="welcome-text">Welcome, {{ currentUser.fullName }}</span>
+    <span class="welcome-text" >Welcome, {{ currentUser.fullName }}</span>
     
     <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
       <mat-icon>account_circle</mat-icon>

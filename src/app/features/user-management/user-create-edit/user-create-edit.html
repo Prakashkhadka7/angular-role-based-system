@@ -1,1 +1,239 @@
-<p>user-create-edit works!</p>
+<!-- user-create-edit-dialog.component.html -->
+<div class="user-dialog-container">
+  <!-- Dialog Header -->
+  <div mat-dialog-title class="dialog-header">
+    <div class="title-section">
+      <mat-icon class="title-icon">{{ isEditMode ? 'edit' : 'person_add' }}</mat-icon>
+      <h2>{{ dialogTitle }}</h2>
+    </div>
+    <button 
+      mat-icon-button 
+      (click)="onCancel()"
+      class="close-button"
+      [disabled]="isLoading">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Dialog Content -->
+  <div mat-dialog-content class="dialog-content">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="user-form">
+      
+      <!-- Personal Information Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <mat-icon class="section-icon">person</mat-icon>
+          <h3 class="section-title">Personal Information</h3>
+        </div>
+        
+        <!-- Full Name -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Full Name *</mat-label>
+          <input 
+            matInput 
+            formControlName="fullName"
+            placeholder="Enter full name">
+          <mat-error *ngIf="isFieldInvalid('fullName')">
+            {{ getFieldError('fullName') }}
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-row">
+          <!-- Username -->
+          <mat-form-field appearance="outline" class="form-field half-width">
+            <mat-label>Username *</mat-label>
+            <input 
+              matInput 
+              formControlName="username"
+              placeholder="Enter username">
+            <mat-icon matSuffix class="field-icon">account_circle</mat-icon>
+            <mat-error *ngIf="isFieldInvalid('username')">
+              {{ getFieldError('username') }}
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Email -->
+          <mat-form-field appearance="outline" class="form-field half-width">
+            <mat-label>Email Address *</mat-label>
+            <input 
+              matInput 
+              type="email"
+              formControlName="email"
+              placeholder="Enter email address">
+            <mat-icon matSuffix class="field-icon">email</mat-icon>
+            <mat-error *ngIf="isFieldInvalid('email')">
+              {{ getFieldError('email') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Security Section -->
+      <div class="form-section" *ngIf="!isEditMode || shouldShowPasswordFields()">
+        <div class="section-header">
+          <mat-icon class="section-icon">security</mat-icon>
+          <h3 class="section-title">Security</h3>
+          <button 
+            type="button"
+            mat-icon-button 
+            (click)="generatePassword()"
+            matTooltip="Generate secure password"
+            class="generate-btn">
+            <mat-icon>auto_awesome</mat-icon>
+          </button>
+        </div>
+
+        <div class="form-row">
+          <!-- Password -->
+          <mat-form-field appearance="outline" class="form-field half-width">
+            <mat-label>{{ isEditMode ? 'New Password (optional)' : 'Password *' }}</mat-label>
+            <input 
+              matInput 
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+              [placeholder]="isEditMode ? 'Leave blank to keep current' : 'Enter password'">
+            <mat-icon 
+              matSuffix 
+              (click)="togglePasswordVisibility()"
+              class="toggle-icon">
+              {{ hidePassword ? 'visibility' : 'visibility_off' }}
+            </mat-icon>
+            <mat-error *ngIf="isFieldInvalid('password')">
+              {{ getFieldError('password') }}
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Confirm Password -->
+          <mat-form-field appearance="outline" class="form-field half-width">
+            <mat-label>Confirm Password</mat-label>
+            <input 
+              matInput 
+              [type]="hideConfirmPassword ? 'password' : 'text'"
+              formControlName="confirmPassword"
+              placeholder="Confirm password">
+            <mat-icon 
+              matSuffix 
+              (click)="toggleConfirmPasswordVisibility()"
+              class="toggle-icon">
+              {{ hideConfirmPassword ? 'visibility' : 'visibility_off' }}
+            </mat-icon>
+            <mat-error *ngIf="isFieldInvalid('confirmPassword')">
+              {{ getFieldError('confirmPassword') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Role and Status Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <mat-icon class="section-icon">admin_panel_settings</mat-icon>
+          <h3 class="section-title">Role & Status</h3>
+        </div>
+
+        <div class="form-row">
+          <!-- Role Selection -->
+          <mat-form-field appearance="outline" class="form-field half-width">
+            <mat-label>Role *</mat-label>
+            <mat-select 
+              formControlName="roleId"
+              placeholder="Select role">
+              <mat-option *ngFor="let role of roles" [value]="role.id">
+                <div class="role-option">
+                  <span class="role-name">{{ role.name }}</span>
+                  <!-- <span class="role-info">{{ role.permissions.length }} permissions</span> -->
+                </div>
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix class="field-icon">shield</mat-icon>
+            <mat-error *ngIf="isFieldInvalid('roleId')">
+              {{ getFieldError('roleId') }}
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Account Status -->
+          <div class="status-container half-width">
+            <div class="status-header">
+              <label class="status-label">Account Status</label>
+              <mat-slide-toggle 
+                formControlName="isActive"
+                class="status-toggle"
+                color="primary">
+              </mat-slide-toggle>
+            </div>
+            <div class="status-info">
+              <span class="status-text" [class.active]="isActive?.value">
+                {{ isActive?.value ? 'Active' : 'Inactive' }}
+              </span>
+              <p class="status-description">
+                {{ isActive?.value ? 'User can log in and access the system' : 'User cannot log in or access the system' }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Role Permissions Preview -->
+      <div class="form-section permissions-section" *ngIf="roleId?.value">
+        <div class="section-header">
+          <mat-icon class="section-icon">list</mat-icon>
+          <h3 class="section-title">Role Permissions Preview</h3>
+        </div>
+        <div class="permissions-container">
+        <mat-chip-set>
+        <mat-chip 
+            *ngFor="let permission of getRolePermissions(roleId?.value)"
+            color="primary"
+            selected>
+            {{ formatData(permission) | titlecase}}
+        </mat-chip>
+        </mat-chip-set>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Dialog Actions -->
+  <div mat-dialog-actions class="dialog-actions">
+    <div class="actions-container">
+      <!-- Cancel Button -->
+      <button 
+        mat-button 
+        type="button"
+        (click)="onCancel()"
+        [disabled]="isLoading"
+        class="cancel-btn">
+        Cancel
+      </button>
+
+      <!-- Submit Button -->
+      <button 
+        mat-raised-button 
+        color="accent"
+        type="submit"
+        (click)="onSubmit()"
+        [disabled]="isLoading || userForm.invalid"
+        class="submit-btn">
+        <mat-spinner 
+          *ngIf="isLoading" 
+          diameter="20" 
+          class="button-spinner">
+        </mat-spinner>
+        <mat-icon *ngIf="!isLoading">{{ isEditMode ? 'save' : 'add' }}</mat-icon>
+        {{ submitButtonText }}
+      </button>
+    </div>
+
+    <!-- Form Status Info -->
+    <div class="form-status" *ngIf="userForm.dirty">
+      <mat-icon class="warning-icon">info</mat-icon>
+      <span>You have unsaved changes</span>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>{{ isEditMode ? 'Updating user...' : 'Creating user...' }}</p>
+  </div>
+</div>

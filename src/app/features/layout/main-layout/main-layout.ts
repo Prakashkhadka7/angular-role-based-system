@@ -19,8 +19,7 @@ export class MainLayout {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    console.log('Current user:');
-    // this.currentUser = this.authService.getCurrentUser();
+    this.currentUser = this.authService.getCurrentUser();
   }
 
   toggleSidenav(): void {

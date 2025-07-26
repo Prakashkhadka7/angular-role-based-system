@@ -31,7 +31,8 @@
       "roleId": 3,
       "isActive": true,
       "createdAt": "2024-02-01T00:00:00Z",
-      "isSuperAdmin": false
+      "isSuperAdmin": false,
+      "updatedAt": "2025-07-24T19:05:40.099Z"
     },
     {
       "id": 4,
@@ -50,7 +51,56 @@
       "id": 1,
       "name": "Super Admin",
       "description": "Full system access",
-      "permissions": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "permissions": [
+        {
+          "id": 1,
+          "name": "VIEW_USERS"
+        },
+        {
+          "id": 2,
+          "name": "CREATE_USERS"
+        },
+        {
+          "id": 3,
+          "name": "EDIT_USERS"
+        },
+        {
+          "id": 4,
+          "name": "DELETE_USERS"
+        },
+        {
+          "id": 5,
+          "name": "VIEW_ROLES"
+        },
+        {
+          "id": 6,
+          "name": "CREATE_ROLES"
+        },
+        {
+          "id": 7,
+          "name": "EDIT_ROLES"
+        },
+        {
+          "id": 8,
+          "name": "DELETE_ROLES"
+        },
+        {
+          "id": 9,
+          "name": "VIEW_DASHBOARD"
+        },
+        {
+          "id": 10,
+          "name": "MANAGE_PROFILE"
+        },
+        {
+          "id": 11,
+          "name": "VIEW_REPORTS"
+        },
+        {
+          "id": 12,
+          "name": "SYSTEM_SETTINGS"
+        }
+      ],
       "isSystem": true,
       "createdAt": "2024-01-01T00:00:00Z"
     },
@@ -58,7 +108,40 @@
       "id": 2,
       "name": "Manager",
       "description": "User management and viewing",
-      "permissions": [1, 2, 3, 4, 9, 10, 11, 12],
+      "permissions": [
+        {
+          "id": 1,
+          "name": "VIEW_USERS"
+        },
+        {
+          "id": 2,
+          "name": "CREATE_USERS"
+        },
+        {
+          "id": 3,
+          "name": "EDIT_USERS"
+        },
+        {
+          "id": 4,
+          "name": "DELETE_USERS"
+        },
+        {
+          "id": 9,
+          "name": "VIEW_DASHBOARD"
+        },
+        {
+          "id": 10,
+          "name": "MANAGE_PROFILE"
+        },
+        {
+          "id": 11,
+          "name": "VIEW_REPORTS"
+        },
+        {
+          "id": 12,
+          "name": "SYSTEM_SETTINGS"
+        }
+      ],
       "isSystem": false,
       "createdAt": "2024-01-15T00:00:00Z"
     },
@@ -66,7 +149,24 @@
       "id": 3,
       "name": "Employee",
       "description": "Limited user operations",
-      "permissions": [1, 3, 9, 11],
+      "permissions": [
+        {
+          "id": 1,
+          "name": "VIEW_USERS"
+        },
+        {
+          "id": 3,
+          "name": "EDIT_USERS"
+        },
+        {
+          "id": 9,
+          "name": "VIEW_DASHBOARD"
+        },
+        {
+          "id": 11,
+          "name": "VIEW_REPORTS"
+        }
+      ],
       "isSystem": false,
       "createdAt": "2024-02-01T00:00:00Z"
     },
@@ -74,7 +174,16 @@
       "id": 4,
       "name": "Viewer",
       "description": "View only access",
-      "permissions": [1, 9],
+      "permissions": [
+        {
+          "id": 1,
+          "name": "VIEW_USERS"
+        },
+        {
+          "id": 9,
+          "name": "VIEW_DASHBOARD"
+        }
+      ],
       "isSystem": false,
       "createdAt": "2024-02-15T00:00:00Z"
     }
