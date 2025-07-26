@@ -214,7 +214,7 @@ export class UserCreateEdit implements OnInit, OnDestroy {
       username: formValue.username.trim().toLowerCase(),
       email: formValue.email.trim().toLowerCase(),
       password: formValue.password,
-      roleId: uuidv4(),
+      roleId: formValue.roleId,
       isActive: formValue.isActive,
     };
 

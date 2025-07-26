@@ -169,7 +169,16 @@ private destroy$ = new Subject<void>();
   }
 
   createUser(): void {
-    this.router.navigate(['/users/create']);
+    const dialogRef = this.dialog.open(UserCreateEdit, {
+      width: '1200px',
+      data: { isEditMode: false }
+    });
+
+    dialogRef.afterClosed().subscribe((result: User) => {
+      if (result) {
+        this.refresh();
+      }
+    });
   }
 
   editUser(user: User): void {

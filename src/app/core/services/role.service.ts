@@ -52,7 +52,7 @@ export class RoleService {
     this.loadingSubject.next(true);
 
     return this.http
-      .patch<Role>(`${this.API_URL}/roles/${id}`, {
+      .put<Role>(`${this.API_URL}/roles/${id}`, {
         ...roleData,
         updatedAt: new Date().toISOString(),
       })

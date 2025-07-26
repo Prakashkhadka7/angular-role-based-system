@@ -6,6 +6,7 @@ export interface Role {
   isSystemRole: boolean;
   createdAt: string;
   updatedAt?: string;
+  priority?: number
 }
 
 export interface CreateRoleRequest {

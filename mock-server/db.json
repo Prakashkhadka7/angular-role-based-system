@@ -12,17 +12,6 @@
       "isSuperAdmin": true
     },
     {
-      "id": 2,
-      "username": "manager",
-      "password": "manager123",
-      "fullName": "John Manager",
-      "email": "manager@company.com",
-      "roleId": 2,
-      "isActive": true,
-      "createdAt": "2024-01-15T00:00:00Z",
-      "isSuperAdmin": false
-    },
-    {
       "id": 3,
       "username": "employee",
       "password": "employee123",
@@ -51,6 +40,7 @@
       "id": 1,
       "name": "Super Admin",
       "description": "Full system access",
+      "priority": 1,
       "permissions": [
         {
           "id": 1,
@@ -108,6 +98,7 @@
       "id": 2,
       "name": "Manager",
       "description": "User management and viewing",
+      "priority": 2,
       "permissions": [
         {
           "id": 1,
@@ -149,6 +140,7 @@
       "id": 3,
       "name": "Employee",
       "description": "Limited user operations",
+      "priority": 3,
       "permissions": [
         {
           "id": 1,
@@ -171,21 +163,36 @@
       "createdAt": "2024-02-01T00:00:00Z"
     },
     {
-      "id": 4,
-      "name": "Viewer",
-      "description": "View only access",
+      "id": "1753460965797wtwotp5dw",
+      "name": "fhgf",
       "permissions": [
         {
           "id": 1,
           "name": "VIEW_USERS"
         },
         {
+          "id": 2,
+          "name": "CREATE_USERS"
+        },
+        {
+          "id": 3,
+          "name": "EDIT_USERS"
+        },
+        {
+          "id": 4,
+          "name": "DELETE_USERS"
+        },
+        {
           "id": 9,
           "name": "VIEW_DASHBOARD"
         }
       ],
+      "description": "",
+      "isSystemRole": false,
+      "createdAt": "",
       "isSystem": false,
-      "createdAt": "2024-02-15T00:00:00Z"
+      "priority": 1,
+      "updatedAt": "2025-07-26T09:01:18.181Z"
     }
   ],
   "permissions": [

@@ -69,6 +69,7 @@ export class RoleCreateEdit {
           Validators.pattern(/^[a-zA-Z0-9\s]+$/),
         ],
       ],
+      priority: [1, [Validators.required, Validators.min(1), Validators.max(100)]] // Add this line
     });
   }
 
@@ -80,9 +81,18 @@ export class RoleCreateEdit {
   private async loadPermissions(): Promise<void> {
     try {
       this.roleService.loadRoles().subscribe((roles) => {
-        this.availablePermissions = Array.from(
-          new Set(roles.flatMap((r) => r.permissions))
-        );
+        console.log('Available roles:', roles);
+        const permissionMap = new Map();
+        roles
+          .flatMap((r) => r.permissions)
+          .forEach((permission) => {
+            const key = `${permission.id}-${permission.name}`;
+            permissionMap.set(key, permission);
+          });
+        this.availablePermissions = Array.from(permissionMap.values());
+        console.log('Unique permissions:', this.availablePermissions);
+
+        this.isLoading = false;
       });
     } catch (error) {
       this.snackBar.open('Failed to load permissions', 'Close', {
@@ -91,27 +101,30 @@ export class RoleCreateEdit {
     }
   }
 
-  private initializeForm(): void {
-    if (this.data.isEdit && this.data.role) {
-      this.roleForm.patchValue({
-        name: this.data.role.name,
-      });
-      this.selectedPermissions = [...this.data.role.permissions];
-    }
-  }
+  // private initializeForm(): void {
+  //   if (this.data.isEdit && this.data.role) {
+  //     this.roleForm.patchValue({
+  //       name: this.data.role.name,
+  //     });
+  //     this.selectedPermissions = [...this.data.role.permissions];
+  //   }
+  // }
 
   isPermissionSelected(permissionName: string): boolean {
-    return this.selectedPermissions.includes(permissionName);
+    return this.selectedPermissions.some((p) => p.name === permissionName);
   }
 
   togglePermission(permissionName: string, checked: boolean): void {
+    const permission = this.availablePermissions.find(
+      (p) => p.name === permissionName
+    );
     if (checked) {
-      if (!this.selectedPermissions.includes(permissionName)) {
-        this.selectedPermissions.push(permissionName);
+      if (!this.selectedPermissions.some((p) => p.name === permissionName)) {
+        this.selectedPermissions.push(permission);
       }
     } else {
       this.selectedPermissions = this.selectedPermissions.filter(
-        (p) => p !== permissionName
+        (p) => p.name !== permissionName
       );
     }
   }
@@ -125,12 +138,22 @@ export class RoleCreateEdit {
   }
 
   formatPermissionName(permissionName: string): string {
-    return permissionName
-      .replace(/_/g, ' ')
+    return permissionName?.replace(/_/g, ' ')
       .toLowerCase()
       .split(' ')
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
+  }
+
+
+  private initializeForm(): void {
+    if (this.data.isEdit && this.data.role) {
+      this.roleForm.patchValue({
+        name: this.data.role.name,
+        priority: this.data.role.priority || 1
+      });
+      this.selectedPermissions = [...this.data.role.permissions];
+    }
   }
 
   async onSave(): Promise<void> {
@@ -147,6 +170,7 @@ export class RoleCreateEdit {
       const roleData: Role = {
         name: this.roleForm.value.name.trim(),
         permissions: [...this.selectedPermissions],
+        priority: this.roleForm.value.priority,
         id: '',
         description: '',
         isSystemRole: false,
@@ -157,10 +181,8 @@ export class RoleCreateEdit {
 
       if (this.data.isEdit && this.data.role) {
         roleData.id = this.data.role.id;
-        result = await this.roleService.updateRole(
-          this.data.role.id!,
-          roleData
-        );
+        const result$ = this.roleService.updateRole(roleData.id, roleData);
+        result = await result$.toPromise();
         this.snackBar.open('Role updated successfully', 'Close', {
           duration: 3000,
         });
@@ -181,6 +203,7 @@ export class RoleCreateEdit {
       this.isLoading = false;
     }
   }
+
 
   onCancel(): void {
     this.dialogRef.close();

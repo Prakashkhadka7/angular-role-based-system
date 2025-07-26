@@ -13,20 +13,35 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
+import { UserDeleteConfirm } from '../../user-management/user-delete-confirm/user-delete-confirm';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-role-list',
-  imports: [MatCardModule,MatProgressSpinnerModule,MatChipsModule,MatTableModule,
+  imports: [
+    MatCardModule,
+    MatProgressSpinnerModule,
+    MatChipsModule,
+    MatTableModule,
     MatIconModule,
     MatTooltipModule,
     MatButtonModule,
-  CommonModule],
+    CommonModule,
+  ],
   templateUrl: './role-list.html',
-  styleUrl: './role-list.scss'
+  styleUrl: './role-list.scss',
 })
 export class RoleList {
-roles: Role[] = [];
-  displayedColumns: string[] = ['name', 'permissions', 'isDefault', 'createdAt', 'actions'];
+  private destroy$ = new Subject<void>();
+  
+  roles: Role[] = [];
+  displayedColumns: string[] = [
+    'name',
+    'permissions',
+    'isDefault',
+    'createdAt',
+    'actions',
+  ];
   isLoading = true;
 
   constructor(
@@ -47,21 +62,21 @@ roles: Role[] = [];
         this.roles = roles;
         this.isLoading = false;
       },
-      error: (error:any) => {
+      error: (error: any) => {
         console.error('Error loading roles:', error);
         this.isLoading = false;
         this.snackBar.open('Error loading roles', 'Close', { duration: 3000 });
-      }
+      },
     });
   }
 
   createRole(): void {
     const dialogRef = this.dialog.open(RoleCreateEdit, {
       width: '600px',
-      data: { mode: 'create' }
+      data: { mode: 'create' },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.loadRoles();
       }
@@ -71,10 +86,10 @@ roles: Role[] = [];
   editRole(role: Role): void {
     const dialogRef = this.dialog.open(RoleCreateEdit, {
       width: '600px',
-      data: { mode: 'edit', role: role }
+      data: { mode: 'edit', role: role, isEdit: true },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.loadRoles();
       }
@@ -82,28 +97,52 @@ roles: Role[] = [];
   }
 
   deleteRole(role: Role): void {
-    const dialogRef = this.dialog.open(RoleDeleteConfirm, {
+    const dialogRef = this.dialog.open(UserDeleteConfirm, {
       width: '400px',
-      data: { role: role }
+      data: { role: role },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.loadRoles();
+        this.performDelete(role);
       }
     });
   }
 
-  formatPermissions(permissions: string[]): string {
-    return permissions.map(p => p.replace('_', ' ')).join(', ');
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  formatData(role: Role){
-    return role?.name.replace('_', ' ');
+  private performDelete(role: Role): void {
+    this.roleService
+      .deleteRole(role.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Role deleted successfully', 'Close', {
+            duration: 3000,
+          });
+          this.loadRoles();
+        },
+        error: (error) => {
+          console.error('Error deleting role:', error);
+          this.snackBar.open('Error deleting role', 'Close', {
+            duration: 3000,
+          });
+        },
+      });
+  }
+
+  formatPermissions(permissions: string[]): string {
+    return permissions.map((p) => p.replace('_', ' ')).join(', ');
+  }
+
+  formatData(role: Role) {
+    return role?.name?.replace('_', ' ');
   }
 
   togglePermissions(role: any): void {
     role.showAllPermissions = !role.showAllPermissions;
   }
-
 }
