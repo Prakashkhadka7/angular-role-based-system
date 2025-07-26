@@ -284,7 +284,7 @@
           }
         ]
       },
-      "updatedAt": "2025-07-26T10:25:33.892Z"
+      "updatedAt": "2025-07-26T11:00:33.845Z"
     }
   ],
   "roles": [
@@ -416,7 +416,7 @@
     },
     {
       "id": "1753460965797wtwotp5dw",
-      "name": "fhgf",
+      "name": "Testrole",
       "permissions": [
         {
           "id": 1,
@@ -433,10 +433,6 @@
         {
           "id": 4,
           "name": "DELETE_USERS"
-        },
-        {
-          "id": 9,
-          "name": "VIEW_DASHBOARD"
         }
       ],
       "description": "",
@@ -444,7 +440,7 @@
       "createdAt": "",
       "isSystem": false,
       "priority": 1,
-      "updatedAt": "2025-07-26T09:01:18.181Z"
+      "updatedAt": "2025-07-26T10:57:53.228Z"
     }
   ],
   "permissions": [

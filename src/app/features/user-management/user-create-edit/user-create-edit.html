@@ -45,7 +45,7 @@
             <input 
               matInput 
               formControlName="username"
-              placeholder="Enter username" readonly="readonly">
+              placeholder="Enter username" [readonly]="isEditMode">
             <mat-icon matSuffix class="field-icon">account_circle</mat-icon>
             <mat-error *ngIf="isFieldInvalid('username')">
               {{ getFieldError('username') }}

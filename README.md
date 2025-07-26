@@ -1,59 +1,79 @@
-# AngularRoleBasedSystem
+# Angular Role-Based System
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.4.
+This is a role-based access control system built with Angular and a mock backend using Express and JSON Server.
 
-## Development server
+## 📦 Features
 
-To start a local development server, run:
+- Angular 20 with standalone API
+- Role-based access (Super Admin, Manager, etc.)
+- User management (list, add, delete)
+- Mock backend with JWT authentication
 
-```bash
-ng serve
-```
+## 🚀 Getting Started
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 1. Clone the Repository
 
 ```bash
-ng generate component component-name
+git clone https://github.com/Prakashkhadka7/angular-role-based-system.git
+cd angular-role-based-system
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### 2. Install Dependencies
 
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
-
-To build the project run:
+### 3. Run the App (Client + Mock Server)
 
 ```bash
-ng build
+npm run dev
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+This runs:
+- Angular app at `http://localhost:4200`
+- Mock API at `http://localhost:3001`
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 📂 Available Scripts
 
-```bash
-ng test
+| Script         | Description                     |
+|----------------|---------------------------------|
+| `npm run dev`  | Start Angular + mock server     |
+| `client-only`  | Run Angular app only            |
+| `server-only`  | Run mock server only            |
+
+---
+
+## 📁 Project Structure
+
+```
+mock-server/       # Express + JSON Server setup
+src/app/           # Angular source code
+ └── auth/         # Authentication & guards
+ └── core/         # Services & interceptors
+ └── features/     # Feature modules like user-management,role-management
 ```
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## 🔐 Login Info (Sample)
 
-```bash
-ng e2e
-```
+| Role        | Username     | Password     |
+|-------------|--------------|--------------|
+| Super Admin | superadmin   | admin123     |
+| Manager     | manager      | manager123   |
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## 🛠 Tech Stack
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Angular 20 (Standalone)
+- Angular Material
+- JSON Server + Express
+- JWT for auth
+
+---
+
+

@@ -13,7 +13,6 @@
               matInput 
               formControlName="name" 
               placeholder="Enter role name"
-              [readonly]="data.isEdit"
               autocomplete="off">
             <mat-icon matSuffix>badge</mat-icon>
             <mat-error *ngIf="roleForm.get('name')?.hasError('required')">

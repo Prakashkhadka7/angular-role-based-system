@@ -35,6 +35,7 @@ export class AppSidebar {
       label: 'Dashboard',
       icon: 'dashboard',
       route: '/dashboard',
+      requiredPermissions: ['VIEW_DASHBOARD']
     },
     {
       label: 'User Management',
