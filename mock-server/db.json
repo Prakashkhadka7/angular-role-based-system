@@ -433,6 +433,10 @@
         {
           "id": 4,
           "name": "DELETE_USERS"
+        },
+        {
+          "id": 9,
+          "name": "VIEW_DASHBOARD"
         }
       ],
       "description": "",
@@ -440,7 +444,7 @@
       "createdAt": "",
       "isSystem": false,
       "priority": 1,
-      "updatedAt": "2025-07-26T10:57:53.228Z"
+      "updatedAt": "2025-07-26T11:05:33.380Z"
     }
   ],
   "permissions": [

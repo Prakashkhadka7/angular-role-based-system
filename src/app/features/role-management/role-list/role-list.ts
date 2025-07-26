@@ -58,7 +58,6 @@ export class RoleList {
     this.isLoading = true;
     this.roleService.loadRoles().subscribe({
       next: (roles: Role[]) => {
-        console.log('Roles loaded:', roles);
         this.roles = roles;
         this.isLoading = false;
       },

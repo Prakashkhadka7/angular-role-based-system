@@ -40,7 +40,6 @@ const canAccessUser = (currentUser, targetUser, targetRole) => {
     ? getDB().roles.find((r) => r.id === currentUser.roleId)
     : currentUser?.role;
   const currentUserPriority = currentUserRole?.priority;
-  console.log("Current user priority:", currentUserRole);
   const targetUserPriority = targetRole?.priority;
 
   // Users can only access users with equal or lower priority (higher number)
@@ -71,7 +70,6 @@ const canAccessRole = (currentUser, targetRole) => {
 const filterUsersByHierarchy = (currentUser, users, roles) => {
   return users.filter((user) => {
     const userRole = roles.find((r) => r.id === user.roleId);
-    console.log("User:", user);
     return canAccessUser(currentUser, user, userRole);
   });
 };
@@ -270,7 +268,7 @@ app.get(
     const rawId = tokenUser;
     const currentUser = db.users.find((u) => u.id === Number(rawId));
     const isSuperAdmin = currentUser?.isSuperAdmin ?? false;
-    
+
     const accessibleUsers = isSuperAdmin
       ? db.users
       : db.users.filter((user) => user.createdBy?.id === Number(rawId));
@@ -287,7 +285,9 @@ app.get(
 // Get specific user - with hierarchy check
 app.get("/users/:id", authenticateToken, checkResourceOwnership, (req, res) => {
   const db = getDB();
-  const user = db.users.find((u) => u.id === parseInt(req.params.id) && u.createdBy === req.user.id);
+  const user = db.users.find(
+    (u) => u.id === parseInt(req.params.id) && u.createdBy === req.user.id
+  );
   if (user) {
     const role = db.roles.find((r) => r.id === user.roleId);
     const permissions = role
@@ -336,7 +336,9 @@ app.post(
     if (existingUser) {
       return res
         .status(400)
-        .json({ message: `Username '${req.body.username}' is already in use.` });
+        .json({
+          message: `Username '${req.body.username}' is already in use.`,
+        });
     }
 
     const newUser = {
@@ -405,7 +407,11 @@ app.put("/users/:id", authenticateToken, checkResourceOwnership, (req, res) => {
 
     // Remove user name from update
     const { username, ...updatedUser } = req.body;
-    db.users[userIndex] = { ...db.users[userIndex], ...updatedUser, id: userId };
+    db.users[userIndex] = {
+      ...db.users[userIndex],
+      ...updatedUser,
+      id: userId,
+    };
     saveDB(db);
 
     const role = db.roles.find((r) => r.id === db.users[userIndex].roleId);
@@ -580,7 +586,8 @@ app.post(
     // Only super admins can create roles with priority 1 (which is itself)
     if (req.body.priority === 1 && !req.user.isSuperAdmin) {
       return res.status(403).json({
-        message: "Only super admins can create roles with priority 1 (which is itself)",
+        message:
+          "Only super admins can create roles with priority 1 (which is itself)",
       });
     }
 
@@ -638,7 +645,11 @@ app.put(
     const targetRole = db.roles[roleIndex];
     const targetRolePermissions = targetRole.permissions || [];
     // Prevent non-super-admins from modifying super admin roles
-    if (targetRole.isSystem && !req.user.isSuperAdmin && req.body.priority === 1) {
+    if (
+      targetRole.isSystem &&
+      !req.user.isSuperAdmin &&
+      req.body.priority === 1
+    ) {
       return res.status(403).json({
         message: "Only super admins can modify super admin roles",
       });
@@ -654,7 +665,10 @@ app.put(
     }
 
     // Prevent users from escalating their own privileges
-    if (roleId === req.user.roleId && req.body.priority < req.user.role.priority) {
+    if (
+      roleId === req.user.roleId &&
+      req.body.priority < req.user.role.priority
+    ) {
       return res.status(403).json({
         message: "You cannot elevate your own role",
       });
@@ -689,7 +703,7 @@ app.get("/api/permissions", authenticateToken, (req, res) => {
 // Profile endpoint - users can view their own profile
 app.get("/profile", authenticateToken, (req, res) => {
   res.json({
-    user: req.user
+    user: req.user,
   });
 });
 

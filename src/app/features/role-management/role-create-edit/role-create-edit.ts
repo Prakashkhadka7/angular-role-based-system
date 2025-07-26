@@ -68,7 +68,6 @@ export class RoleCreateEdit {
   private async loadPermissions(): Promise<void> {
     try {
       this.roleService.loadRoles().subscribe((roles) => {
-        console.log('Available roles:', roles);
         const permissionMap = new Map();
         roles
           .flatMap((r) => r.permissions)
@@ -77,7 +76,6 @@ export class RoleCreateEdit {
             permissionMap.set(key, permission);
           });
         this.availablePermissions = Array.from(permissionMap.values());
-        console.log('Unique permissions:', this.availablePermissions);
 
         this.isLoading = false;
       });
