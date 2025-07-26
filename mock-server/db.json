@@ -15,13 +15,24 @@
       "id": 3,
       "username": "employee",
       "password": "employee123",
-      "fullName": "Jane Employee",
+      "fullName": "Jane Employees",
       "email": "employee@company.com",
       "roleId": 3,
       "isActive": true,
       "createdAt": "2024-02-01T00:00:00Z",
       "isSuperAdmin": false,
-      "updatedAt": "2025-07-24T19:05:40.099Z"
+      "updatedAt": "2025-07-26T09:23:18.801Z"
+    },
+    {
+      "id": 2,
+      "username": "manager",
+      "password": "manager123",
+      "fullName": "Manager User",
+      "email": "manager@company.com",
+      "roleId": 2,
+      "isActive": true,
+      "createdAt": "2024-01-15T00:00:00Z",
+      "isSuperAdmin": false
     },
     {
       "id": 4,
@@ -29,10 +40,251 @@
       "password": "viewer123",
       "fullName": "Bob Viewer",
       "email": "viewer@company.com",
-      "roleId": 4,
+      "roleId": 3,
       "isActive": true,
       "createdAt": "2024-02-15T00:00:00Z",
+      "isSuperAdmin": false,
+      "updatedAt": "2025-07-26T10:11:33.477Z"
+    },
+    {
+      "id": "1753521544252pa929926r",
+      "fullName": "Test User",
+      "username": "testuser",
+      "email": "testuser@gmail.com",
+      "password": "Prakash@123",
+      "roleId": 2,
+      "isActive": true,
+      "createdAt": "2025-07-26T09:19:04.272Z",
       "isSuperAdmin": false
+    },
+    {
+      "id": "17535223675516qzyzpfq9",
+      "fullName": "testlast",
+      "username": "testlast",
+      "email": "testlast@gmail.com",
+      "password": "Prakash@123",
+      "roleId": 3,
+      "isActive": true,
+      "createdAt": "2025-07-26T09:32:47.583Z",
+      "isSuperAdmin": false,
+      "createdBy": {
+        "id": "1753521544252pa929926r",
+        "fullName": "Test User",
+        "username": "testuser",
+        "email": "testuser@gmail.com",
+        "password": "Prakash@123",
+        "roleId": 2,
+        "isActive": true,
+        "createdAt": "2025-07-26T09:19:04.272Z",
+        "isSuperAdmin": false,
+        "role": {
+          "id": 2,
+          "name": "Manager",
+          "description": "User management and viewing",
+          "priority": 2,
+          "permissions": [
+            {
+              "id": 1,
+              "name": "VIEW_USERS"
+            },
+            {
+              "id": 2,
+              "name": "CREATE_USERS"
+            },
+            {
+              "id": 3,
+              "name": "EDIT_USERS"
+            },
+            {
+              "id": 4,
+              "name": "DELETE_USERS"
+            },
+            {
+              "id": 9,
+              "name": "VIEW_DASHBOARD"
+            },
+            {
+              "id": 10,
+              "name": "MANAGE_PROFILE"
+            },
+            {
+              "id": 11,
+              "name": "VIEW_REPORTS"
+            },
+            {
+              "id": 12,
+              "name": "SYSTEM_SETTINGS"
+            }
+          ],
+          "isSystem": false,
+          "createdAt": "2024-01-15T00:00:00Z"
+        },
+        "permissions": [
+          {
+            "id": 1,
+            "name": "VIEW_USERS",
+            "description": "View users list",
+            "category": "User Management"
+          },
+          {
+            "id": 2,
+            "name": "CREATE_USERS",
+            "description": "Create new users",
+            "category": "User Management"
+          },
+          {
+            "id": 3,
+            "name": "EDIT_USERS",
+            "description": "Edit existing users",
+            "category": "User Management"
+          },
+          {
+            "id": 4,
+            "name": "DELETE_USERS",
+            "description": "Delete users",
+            "category": "User Management"
+          },
+          {
+            "id": 9,
+            "name": "VIEW_DASHBOARD",
+            "description": "Access dashboard",
+            "category": "General"
+          },
+          {
+            "id": 10,
+            "name": "MANAGE_PROFILE",
+            "description": "Manage own profile",
+            "category": "Profile"
+          },
+          {
+            "id": 11,
+            "name": "VIEW_REPORTS",
+            "description": "View reports",
+            "category": "Reporting"
+          },
+          {
+            "id": 12,
+            "name": "SYSTEM_SETTINGS",
+            "description": "Access system settings",
+            "category": "Administration"
+          }
+        ]
+      }
+    },
+    {
+      "id": "1753522875030lx1gx9yf6",
+      "fullName": "testmanageruser",
+      "username": "testmanagers",
+      "email": "testmanager@gmail.com",
+      "password": "Prakash@123",
+      "roleId": 3,
+      "isActive": true,
+      "createdAt": "2025-07-26T09:41:15.060Z",
+      "isSuperAdmin": false,
+      "createdBy": {
+        "id": 2,
+        "username": "manager",
+        "password": "manager123",
+        "fullName": "Manager User",
+        "email": "manager@company.com",
+        "roleId": 2,
+        "isActive": true,
+        "createdAt": "2024-01-15T00:00:00Z",
+        "isSuperAdmin": false,
+        "role": {
+          "id": 2,
+          "name": "Manager",
+          "description": "User management and viewing",
+          "priority": 2,
+          "permissions": [
+            {
+              "id": 1,
+              "name": "VIEW_USERS"
+            },
+            {
+              "id": 2,
+              "name": "CREATE_USERS"
+            },
+            {
+              "id": 3,
+              "name": "EDIT_USERS"
+            },
+            {
+              "id": 4,
+              "name": "DELETE_USERS"
+            },
+            {
+              "id": 9,
+              "name": "VIEW_DASHBOARD"
+            },
+            {
+              "id": 10,
+              "name": "MANAGE_PROFILE"
+            },
+            {
+              "id": 11,
+              "name": "VIEW_REPORTS"
+            },
+            {
+              "id": 12,
+              "name": "SYSTEM_SETTINGS"
+            }
+          ],
+          "isSystem": false,
+          "createdAt": "2024-01-15T00:00:00Z"
+        },
+        "permissions": [
+          {
+            "id": 1,
+            "name": "VIEW_USERS",
+            "description": "View users list",
+            "category": "User Management"
+          },
+          {
+            "id": 2,
+            "name": "CREATE_USERS",
+            "description": "Create new users",
+            "category": "User Management"
+          },
+          {
+            "id": 3,
+            "name": "EDIT_USERS",
+            "description": "Edit existing users",
+            "category": "User Management"
+          },
+          {
+            "id": 4,
+            "name": "DELETE_USERS",
+            "description": "Delete users",
+            "category": "User Management"
+          },
+          {
+            "id": 9,
+            "name": "VIEW_DASHBOARD",
+            "description": "Access dashboard",
+            "category": "General"
+          },
+          {
+            "id": 10,
+            "name": "MANAGE_PROFILE",
+            "description": "Manage own profile",
+            "category": "Profile"
+          },
+          {
+            "id": 11,
+            "name": "VIEW_REPORTS",
+            "description": "View reports",
+            "category": "Reporting"
+          },
+          {
+            "id": 12,
+            "name": "SYSTEM_SETTINGS",
+            "description": "Access system settings",
+            "category": "Administration"
+          }
+        ]
+      },
+      "updatedAt": "2025-07-26T10:25:33.892Z"
     }
   ],
   "roles": [

@@ -11,19 +11,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-// export interface Permission {
-//   id: number;
-//   name: string;
-//   description: string;
-// }
-
-// export interface Role {
-//   id?: number;
-//   name: string;
-//   permissions: string[];
-//   isDefault?: boolean;
-//   createdAt?: string;
-// }
 
 export interface RoleDialogData {
   role?: Role;
@@ -100,15 +87,6 @@ export class RoleCreateEdit {
       });
     }
   }
-
-  // private initializeForm(): void {
-  //   if (this.data.isEdit && this.data.role) {
-  //     this.roleForm.patchValue({
-  //       name: this.data.role.name,
-  //     });
-  //     this.selectedPermissions = [...this.data.role.permissions];
-  //   }
-  // }
 
   isPermissionSelected(permissionName: string): boolean {
     return this.selectedPermissions.some((p) => p.name === permissionName);
@@ -207,5 +185,9 @@ export class RoleCreateEdit {
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  trackById(index: number, item: any): any {
+    return item.id || index;
   }
 }

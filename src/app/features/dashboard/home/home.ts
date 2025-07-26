@@ -71,16 +71,6 @@ export class Home {
   private loadUserData(): void {
     this.currentUser = this.authService.getCurrentUser();
     this.currentUserRole = this.currentUser?.role || null;
-    // if (this.currentUser) {
-    //   this.authService.getUserRole(this.currentUser.roleId).subscribe({
-    //     next: (role:any) => {
-    //       this.currentUserRole = role;
-    //     },
-    //     error: (error:any) => {
-    //       console.error('Error loading user role:', error);
-    //     }
-    //   });
-    // }
   }
 
   private setupQuickActions(): void {
@@ -167,5 +157,9 @@ export class Home {
       hour: '2-digit',
       minute: '2-digit'
     });
+  }
+
+  trackById(index: number, item: any): any {
+    return item.id || index;
   }
 }

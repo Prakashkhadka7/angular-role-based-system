@@ -22,7 +22,7 @@ interface MenuItem {
     MatRippleModule,
   ],
   templateUrl: './app-sidebar.html',
-  styleUrl: './app-sidebar.scss'
+  styleUrl: './app-sidebar.scss',
 })
 export class AppSidebar {
   @Output() toggleSidenav = new EventEmitter<void>();
@@ -34,38 +34,37 @@ export class AppSidebar {
     {
       label: 'Dashboard',
       icon: 'dashboard',
-      route: '/dashboard'
+      route: '/dashboard',
     },
     {
       label: 'User Management',
       icon: 'people',
       route: '/users',
-      requiredPermissions: ['VIEW_USERS']
+      requiredPermissions: ['VIEW_USERS'],
     },
     {
       label: 'Role Management',
       icon: 'security',
       route: '/roles',
-      requiredPermissions: ['VIEW_ROLES']
-    }
+      requiredPermissions: ['VIEW_ROLES'],
+    },
   ];
 
-  constructor(
-    private authStateService: AuthService,
-    private router: Router
-  ) {
+  constructor(private authStateService: AuthService, private router: Router) {
     this.currentUser$ = this.authStateService.currentUser$;
   }
 
   ngOnInit() {
-      this.currentUser = this.authStateService.getCurrentUser();
+    this.currentUser = this.authStateService.getCurrentUser();
   }
 
-  hasPermission(argPermission: any){
-    if(!argPermission){
+  hasPermission(argPermission: any) {
+    if (!argPermission) {
       return true;
     }
-   return !!argPermission?.every((permission: string) => this.currentUser.permissions.some((p: any) => p.name === permission));
+    return !!argPermission?.every((permission: string) =>
+      this.currentUser.permissions.some((p: any) => p.name === permission)
+    );
   }
 
   navigate(route: string) {
@@ -78,5 +77,9 @@ export class AppSidebar {
 
   onToggleSidenav() {
     this.toggleSidenav.emit();
+  }
+
+  trackById(index: number, item: any): any {
+    return item.id || index;
   }
 }

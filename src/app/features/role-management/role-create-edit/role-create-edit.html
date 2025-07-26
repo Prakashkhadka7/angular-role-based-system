@@ -54,7 +54,7 @@
             
             <div class="permissions-grid" *ngIf="availablePermissions.length > 0; else noPermissions">
               <mat-checkbox
-                *ngFor="let permission of availablePermissions"
+                *ngFor="let permission of availablePermissions; trackBy: trackById"
                 [checked]="isPermissionSelected(permission.name)"
                 (change)="togglePermission(permission.name, $event.checked)"
                 class="permission-checkbox">

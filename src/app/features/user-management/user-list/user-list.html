@@ -42,7 +42,7 @@
             (selectionChange)="onRoleFilterChange()">
             <mat-option value="">All Roles</mat-option>
             <mat-option 
-              *ngFor="let role of roles" 
+              *ngFor="let role of roles; trackBy: trackById" 
               [value]="role.id.toString()">
               {{ role.name }}
             </mat-option>

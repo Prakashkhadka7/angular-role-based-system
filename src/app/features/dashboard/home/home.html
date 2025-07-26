@@ -74,7 +74,7 @@
     
     <div class="actions-grid">
       <mat-card 
-        *ngFor="let action of quickActions" 
+        *ngFor="let action of quickActions; trackBy: trackById" 
         class="action-card"
         [routerLink]="action.route"
         role="button"
@@ -108,7 +108,7 @@
       <mat-card-content>
         <div class="permissions-grid">
           <div 
-            *ngFor="let permission of currentUserRole.permissions" 
+            *ngFor="let permission of currentUserRole.permissions; trackBy: trackById" 
             class="permission-chip">
             <mat-icon class="permission-icon">check</mat-icon>
             <span>{{ permission?.name | titlecase }}</span>

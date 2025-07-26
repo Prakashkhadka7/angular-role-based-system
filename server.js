@@ -92,9 +92,9 @@ const authenticateToken = (req, res, next) => {
       // For now, we'll get user from the token and validate against DB
       const db = getDB();
       const tokenUser = req.headers["x-user-id"]; // You'd include this in your client requests
-      const user = db.users.find(
-        (u) => u.id === parseInt(tokenUser) && u.isActive
-      );
+      const rawId = tokenUser;
+      const userId = /^\d+$/.test(rawId) ? Number(rawId) : rawId;
+      const user = db.users.find((u) => u.id === userId && u.isActive);
 
       if (!user) {
         return res
@@ -183,7 +183,9 @@ const requirePermission = (requiredPermissions) => {
 
 // Enhanced resource ownership check with hierarchy
 const checkResourceOwnership = (req, res, next) => {
-  const resourceUserId = parseInt(req.params.id);
+  const rawId = req.params.id;
+  // Check if it's purely numeric (e.g., '34'), then convert to number
+  const resourceUserId = /^\d+$/.test(rawId) ? Number(rawId) : rawId;
   const currentUserId = req.user.id;
   const db = getDB();
 
@@ -263,36 +265,15 @@ app.get(
   (req, res) => {
     const db = getDB();
 
-    // Filter users based on role hierarchy
-    const accessibleUsers = filterUsersByHierarchy(
-      req.user,
-      db.users,
-      db.roles
-    );
-    console.log("Accessible users:", accessibleUsers);
-
-    const usersWithRoles = accessibleUsers.map((user) => {
-      const role = db.roles.find((r) => r.id === user.roleId);
-      return { ...user, role };
-    });
-
-    res.json(usersWithRoles);
-  }
-);
-
-app.get(
-  "/api/users",
-  authenticateToken,
-  requireRole(["Manager", "Admin"]),
-  (req, res) => {
-    const db = getDB();
-
-    // Filter users based on role hierarchy
-    const accessibleUsers = filterUsersByHierarchy(
-      req.user,
-      db.users,
-      db.roles
-    );
+    // Get users associated to the logged in user
+    const tokenUser = req.headers["x-user-id"];
+    const rawId = tokenUser;
+    const currentUser = db.users.find((u) => u.id === Number(rawId));
+    const isSuperAdmin = currentUser?.isSuperAdmin ?? false;
+    
+    const accessibleUsers = isSuperAdmin
+      ? db.users
+      : db.users.filter((user) => user.createdBy?.id === Number(rawId));
 
     const usersWithRoles = accessibleUsers.map((user) => {
       const role = db.roles.find((r) => r.id === user.roleId);
@@ -306,7 +287,7 @@ app.get(
 // Get specific user - with hierarchy check
 app.get("/users/:id", authenticateToken, checkResourceOwnership, (req, res) => {
   const db = getDB();
-  const user = db.users.find((u) => u.id === parseInt(req.params.id));
+  const user = db.users.find((u) => u.id === parseInt(req.params.id) && u.createdBy === req.user.id);
   if (user) {
     const role = db.roles.find((r) => r.id === user.roleId);
     const permissions = role
@@ -351,12 +332,20 @@ app.post(
       }
     }
 
+    const existingUser = db.users.find((u) => u.username === req.body.username);
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ message: `Username '${req.body.username}' is already in use.` });
+    }
+
     const newUser = {
       id: Math.max(...db.users.map((u) => u.id)) + 1,
       ...req.body,
       createdAt: new Date().toISOString(),
       isActive: true,
       isSuperAdmin: req.body.isSuperAdmin || false,
+      createdBy: req.user,
     };
 
     db.users.push(newUser);
@@ -370,7 +359,9 @@ app.post(
 // Update user - with hierarchy check
 app.put("/users/:id", authenticateToken, checkResourceOwnership, (req, res) => {
   const db = getDB();
-  const userId = parseInt(req.params.id);
+  const rawId = req.params.id;
+  // Check if it's purely numeric (e.g., '34'), then convert to number
+  const userId = /^\d+$/.test(rawId) ? Number(rawId) : rawId;
   const userIndex = db.users.findIndex((u) => u.id === userId);
 
   if (userIndex !== -1) {
@@ -412,7 +403,9 @@ app.put("/users/:id", authenticateToken, checkResourceOwnership, (req, res) => {
       }
     }
 
-    db.users[userIndex] = { ...db.users[userIndex], ...req.body, id: userId };
+    // Remove user name from update
+    const { username, ...updatedUser } = req.body;
+    db.users[userIndex] = { ...db.users[userIndex], ...updatedUser, id: userId };
     saveDB(db);
 
     const role = db.roles.find((r) => r.id === db.users[userIndex].roleId);

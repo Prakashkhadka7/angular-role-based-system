@@ -45,7 +45,7 @@
             <input 
               matInput 
               formControlName="username"
-              placeholder="Enter username">
+              placeholder="Enter username" readonly="readonly">
             <mat-icon matSuffix class="field-icon">account_circle</mat-icon>
             <mat-error *ngIf="isFieldInvalid('username')">
               {{ getFieldError('username') }}
@@ -138,10 +138,9 @@
             <mat-select 
               formControlName="roleId"
               placeholder="Select role">
-              <mat-option *ngFor="let role of roles" [value]="role.id">
+              <mat-option *ngFor="let role of roles; trackBy: trackById" [value]="role.id">
                 <div class="role-option">
                   <span class="role-name">{{ role.name }}</span>
-                  <!-- <span class="role-info">{{ role.permissions.length }} permissions</span> -->
                 </div>
               </mat-option>
             </mat-select>
@@ -182,7 +181,7 @@
         <div class="permissions-container">
         <mat-chip-set>
         <mat-chip 
-            *ngFor="let permission of getRolePermissions(roleId?.value)"
+            *ngFor="let permission of getRolePermissions(roleId?.value); trackBy: trackById"
             color="primary"
             selected>
             {{ formatData(permission) | titlecase}}

@@ -252,4 +252,8 @@ private destroy$ = new Subject<void>();
   refresh(): void {
     this.loadUsers();
   }
+
+  trackById(index: number, item: any): any {
+    return item.id || index;
+  }
 }

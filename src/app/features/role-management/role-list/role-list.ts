@@ -33,7 +33,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class RoleList {
   private destroy$ = new Subject<void>();
-  
+
   roles: Role[] = [];
   displayedColumns: string[] = [
     'name',
@@ -144,5 +144,9 @@ export class RoleList {
 
   togglePermissions(role: any): void {
     role.showAllPermissions = !role.showAllPermissions;
+  }
+
+  trackById(index: number, item: any): any {
+    return item.id || index;
   }
 }

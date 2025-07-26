@@ -11,7 +11,6 @@ import { CreateUserRequest, UpdateUserRequest, User } from '../../../core/models
 import { Role } from '../../../core/models/role.model';
 import { UserService } from '../../../core/services/user.service';
 import { RoleService } from '../../../core/services/role.service';
-import { v4 as uuidv4 } from 'uuid';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -66,7 +65,7 @@ export class UserCreateEdit implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<UserCreateEdit>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private changeDetectionRef : ChangeDetectorRef,
+    private changeDetectionRef: ChangeDetectorRef
   ) {
     this.isEditMode = data.isEditMode;
     this.dialogTitle = this.isEditMode ? 'Edit User' : 'Create New User';
@@ -99,15 +98,7 @@ export class UserCreateEdit implements OnInit, OnDestroy {
           Validators.pattern(/^[a-zA-Z\s]+$/),
         ],
       ],
-      username: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(50),
-          Validators.pattern(/^[a-zA-Z0-9_]+$/),
-        ],
-      ],
+      username: [''],
       email: [
         '',
         [Validators.required, Validators.email, Validators.maxLength(255)],
@@ -476,5 +467,9 @@ export class UserCreateEdit implements OnInit, OnDestroy {
 
   formatData(data: any) {
     return data?.name.replace('_', ' ');
+  }
+
+  trackById(index: number, item: any): any {
+    return item.id || index;
   }
 }

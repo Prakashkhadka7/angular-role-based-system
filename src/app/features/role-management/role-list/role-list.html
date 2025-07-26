@@ -56,20 +56,19 @@
           </ng-container>
 
           <!-- Permissions Column -->
-           <!-- {{role.permissions}} -->
           <ng-container matColumnDef="permissions">
             <th mat-header-cell *matHeaderCellDef>Permissions</th>
             <td mat-cell *matCellDef="let role" class="permissions-cell">
               <div class="permissions-container">
                 <mat-chip-listbox class="permissions-chips">
                   <!-- Show first 3 permissions -->
-                  <mat-chip-option style="pointer-events: none;" *ngFor="let permission of role.permissions.slice(0, 3)"
+                  <mat-chip-option style="pointer-events: none;" *ngFor="let permission of role.permissions.slice(0, 3);trackBy: trackById"
                     class="permission-chip">
                     {{ formatData(permission) | titlecase }}
                   </mat-chip-option>
 
                   <!-- Show remaining permissions if expanded -->
-                  <mat-chip-option style="pointer-events: none;" *ngFor="let permission of role.permissions.slice(3)"
+                  <mat-chip-option style="pointer-events: none;" *ngFor="let permission of role.permissions.slice(3);trackBy: trackById"
                     class="permission-chip" [style.display]="role.showAllPermissions ? 'inline-flex' : 'none'">
                     {{ formatData(permission) | titlecase }}
                   </mat-chip-option>

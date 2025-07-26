@@ -15,7 +15,7 @@
 
   <nav class="sidebar-nav">
     <mat-nav-list>
-      <ng-container *ngFor="let item of menuItems">
+      <ng-container *ngFor="let item of menuItems; trackBy: trackById">
         <mat-list-item 
          *ngIf="hasPermission(item.requiredPermissions)"
           [class.active]="isActiveRoute(item.route)"
